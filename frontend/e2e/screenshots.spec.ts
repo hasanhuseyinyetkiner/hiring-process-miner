@@ -3,7 +3,10 @@ import { expect, test, type Page } from "@playwright/test"
 async function openDemo(page: Page, theme: "light" | "dark") {
   const response = await page.request.get("http://127.0.0.1:8102/api/datasets")
   const body = (await response.json()) as { datasets: Array<{ id: string; name: string }> }
-  const demo = body.datasets.find((dataset) => dataset.name === "Synthetic hiring log") ?? body.datasets[0]
+  const demo =
+    body.datasets.find((dataset) => dataset.name === "Demo hiring funnel") ??
+    body.datasets.find((dataset) => dataset.name === "Synthetic hiring log") ??
+    body.datasets[0]
   expect(demo).toBeTruthy()
   await page.addInitScript(
     ({ id, themeName }) => {
