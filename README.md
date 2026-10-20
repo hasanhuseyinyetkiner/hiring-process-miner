@@ -29,7 +29,7 @@ Hiring ops teams know their intended process, but the event log tells a differen
 | B | Applied | 2026-01-01T09:30:00Z | agency | design |
 | B | Rejected | 2026-01-03T16:00:00Z | agency | design |
 
-A fuller three-case CSV lives in [`samples/tiny-hiring-log.csv`](samples/tiny-hiring-log.csv). On first empty database start, the API seeds an 800-case synthetic log with a deterministic interview-scheduling bottleneck.
+A fuller three-case CSV lives in [`samples/tiny-hiring-log.csv`](samples/tiny-hiring-log.csv). On first empty database start, the API seeds a synthetic log from **800 generated cases** (seed 42) plus injected quality-probe rows; after import the demo dataset reports **802** eligible cases (QX3/QX4 probes remain analytics-eligible) and a deterministic interview-scheduling bottleneck.
 
 ## Quick start
 
@@ -47,7 +47,7 @@ pnpm install
 pnpm dev
 ```
 
-With `SEED_ON_STARTUP=true` (Settings default), a synthetic 800-case hiring log is created when the DB is empty. Or use **Import → Generate synthetic** / upload `samples/tiny-hiring-log.csv`.
+With `SEED_ON_STARTUP=true` (Settings default), that synthetic seed is created when the DB is empty (`generator_cases=800`, typical `case_count=802`). Or use **Import → Generate synthetic** / upload `samples/tiny-hiring-log.csv`.
 
 | Service | URL |
 | --- | --- |
