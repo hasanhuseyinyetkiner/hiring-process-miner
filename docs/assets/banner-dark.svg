@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-label="Hiring Process Miner: Understand how hiring actually happens — from event logs to explainable insights.">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B1020"/><stop offset="1" stop-color="#111827"/></linearGradient>
+<radialGradient id="glow" cx="0.8" cy="0.4" r="0.6"><stop offset="0" stop-color="#7C3AED" stop-opacity="0.22"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#1F2937" stroke-width="1" opacity="0.6"/></pattern>
+</defs>
+<rect width="1280" height="360" rx="24" fill="url(#bg)"/>
+<rect width="1280" height="360" rx="24" fill="url(#grid)" opacity="0.5"/>
+<rect width="1280" height="360" rx="24" fill="url(#glow)"/>
+<rect x="0.75" y="0.75" width="1278.5" height="358.5" rx="23.5" fill="none" stroke="#1F2937" stroke-width="1.5"/>
+<rect x="80" y="62" width="44" height="6" rx="3" fill="#7C3AED"/>
+<text x="80" y="128" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="60" font-weight="800" letter-spacing="-1.5" fill="#F8FAFC">Hiring Process Miner</text>
+<text x="80" y="186" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="28" fill="#94A3B8">Understand how hiring actually happens —</text><text x="80" y="222" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="28" fill="#94A3B8">from event logs to explainable insights.</text>
+<rect x="80" y="268" width="192" height="36" rx="18" fill="#7C3AED" fill-opacity="0.12" stroke="#7C3AED" stroke-opacity="0.45"/><text x="176.0" y="292" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" fill="#C4B5FD">Process discovery</text><rect x="284" y="268" width="132" height="36" rx="18" fill="#7C3AED" fill-opacity="0.12" stroke="#7C3AED" stroke-opacity="0.45"/><text x="350.0" y="292" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" fill="#C4B5FD">Bottlenecks</text><rect x="428" y="268" width="132" height="36" rx="18" fill="#7C3AED" fill-opacity="0.12" stroke="#7C3AED" stroke-opacity="0.45"/><text x="494.0" y="292" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" fill="#C4B5FD">Conformance</text>
+<path d="M880 110 C930.0 110 930.0 70 980 70" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="6"/>
+<path d="M880 110 C930.0 110 930.0 190 980 190" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="3"/>
+<path d="M980 70 C1035.0 70 1035.0 130 1090 130" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="5"/>
+<path d="M980 190 C1035.0 190 1035.0 130 1090 130" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="2"/>
+<path d="M1090 130 C1140.0 130 1140.0 90 1190 90" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="4"/>
+<path d="M1090 130 C1140.0 130 1140.0 240 1190 240" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="3"/>
+<path d="M980 190 C1085.0 190 1085.0 240 1190 240" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="1.5"/>
+<circle cx="880" cy="110" r="20" fill="#161E2E" stroke="#7C3AED" stroke-width="3"/>
+<circle cx="880" cy="110" r="7" fill="#7C3AED"/>
+<circle cx="980" cy="70" r="20" fill="#161E2E" stroke="#7C3AED" stroke-width="3"/>
+<circle cx="980" cy="70" r="7" fill="#7C3AED"/>
+<circle cx="980" cy="190" r="20" fill="#161E2E" stroke="#7C3AED" stroke-width="3"/>
+<circle cx="980" cy="190" r="7" fill="#7C3AED"/>
+<circle cx="1090" cy="130" r="26" fill="#161E2E" stroke="#EF4444" stroke-width="4"/>
+<circle cx="1090" cy="130" r="7" fill="#EF4444"/>
+<circle cx="1190" cy="90" r="20" fill="#161E2E" stroke="#7C3AED" stroke-width="3"/>
+<circle cx="1190" cy="90" r="7" fill="#7C3AED"/>
+<circle cx="1190" cy="240" r="20" fill="#161E2E" stroke="#7C3AED" stroke-width="3"/>
+<circle cx="1190" cy="240" r="7" fill="#7C3AED"/>
+<g transform="translate(1040 290)"><rect width="150" height="34" rx="17" fill="#EF4444" opacity="0.12"/><text x="75" y="23" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" fill="#EF4444">p90 wait ↑</text></g>
+</svg>
