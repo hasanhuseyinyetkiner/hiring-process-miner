@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { api } from "../api/client.ts"
+import { ExportBar } from "../components/ExportBar.tsx"
 import { ErrorBlock, LoadingBlock } from "../components/States.tsx"
 import { formatCount, formatDuration, formatShare } from "../lib/format.ts"
 import { useDataset } from "../state.tsx"
@@ -51,12 +52,15 @@ export function OverviewPage() {
   const hired = funnel.data?.stages.find((stage) => stage.stage === "Hired")
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{dataset.timezone}</p>
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">{dataset.name}</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--color-muted)]">
-          {dataset.notes ?? "Uploaded event log. Treat case identifiers as already anonymized."}
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{dataset.timezone}</p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">{dataset.name}</h1>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--color-muted)]">
+            {dataset.notes ?? "Uploaded event log. Treat case identifiers as already anonymized."}
+          </p>
+        </div>
+        <ExportBar />
       </div>
       <section className="grid gap-3 md:grid-cols-4">
         <Kpi label="Cases" value={formatCount(performance.data?.total_cases)} detail={`${formatCount(performance.data?.ongoing_cases)} ongoing`} />

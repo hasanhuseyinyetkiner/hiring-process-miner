@@ -116,6 +116,10 @@ export const api = {
     request<Rework>(`/api/datasets/${datasetId}/rework${query}`),
   removeDataset: (datasetId: string) =>
     request<void>(`/api/datasets/${datasetId}`, { method: "DELETE" }),
+  exportSummaryCsv: (datasetId: string, query: string) =>
+    request<string>(`/api/datasets/${datasetId}/export/summary.csv${query}`),
+  exportReportHtml: (datasetId: string, query: string) =>
+    request<string>(`/api/datasets/${datasetId}/export/report.html${query}`),
 }
 
 export async function waitForJob(jobId: string): Promise<Job> {

@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hpm
+      POSTGRES_PASSWORD: hpm
+      POSTGRES_DB: hpm
+    ports:
+      - "127.0.0.1:5402:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hpm -d hpm"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: demo
+      HOST: 0.0.0.0
+      PORT: "8102"
+      ALLOW_NETWORK_BIND: "true"
+      DATABASE_URL: postgresql+psycopg://hpm:hpm@db:5432/hpm
+      SEED_ON_STARTUP: "true"
+      CORS_ORIGINS: http://127.0.0.1:5102,http://localhost:5102
+    ports:
+      - "127.0.0.1:8102:8102"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:5102:80"
+    depends_on:
+      - api

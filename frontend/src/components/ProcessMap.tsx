@@ -1,7 +1,9 @@
 import {
   Background,
   Controls,
+  Handle,
   MiniMap,
+  Position,
   ReactFlow,
   type Edge,
   type Node,
@@ -40,13 +42,15 @@ function StageNode({ data }: { data: Record<string, unknown> }) {
   return (
     <div
       data-testid={`node-${activity}`}
-      className="w-[196px] rounded-2xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 shadow-sm"
+      className="relative w-[196px] rounded-2xl border border-[var(--color-line)] bg-[var(--color-card)] px-3 py-2 shadow-sm"
       style={{ borderTop: `4px solid ${tone}` }}
     >
+      <Handle type="target" position={Position.Left} className="!bg-accent" />
       <p className="text-sm font-semibold leading-5">{activity}</p>
       <p className="tabular mt-1 text-xs text-[var(--color-muted)]">
         {formatCount(Number(data.case_count ?? 0))} cases · {formatCount(Number(data.event_count ?? 0))} events
       </p>
+      <Handle type="source" position={Position.Right} className="!bg-accent" />
     </div>
   )
 }

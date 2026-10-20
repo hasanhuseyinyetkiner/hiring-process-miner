@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { api } from "../api/client.ts"
+import { ExportBar } from "../components/ExportBar.tsx"
 import { FilterBar } from "../components/FilterBar.tsx"
 import { delayLabel, ProcessMap } from "../components/ProcessMap.tsx"
 import { EmptyBlock, ErrorBlock, ImportLink, LoadingBlock } from "../components/States.tsx"
@@ -36,25 +37,28 @@ export function MapPage() {
             · {formatCount(graph.data?.total_cases)} cases
           </p>
         </div>
-        <label className="grid min-w-[220px] gap-1 text-xs font-medium">
-          Minimum edge frequency {ratio}% of cases
-          <input
-            data-testid="edge-slider"
-            type="range"
-            min={0}
-            max={80}
-            step={1}
-            value={ratio}
-            aria-valuemin={0}
-            aria-valuemax={80}
-            aria-valuenow={ratio}
-            aria-label="Minimum edge frequency as percent of cases"
-            onChange={(event) => {
-              setRatio(Number(event.target.value))
-              setSelection(null)
-            }}
-          />
-        </label>
+        <div className="flex flex-col items-end gap-2">
+          <label className="grid min-w-[220px] gap-1 text-xs font-medium">
+            Minimum edge frequency {ratio}% of cases
+            <input
+              data-testid="edge-slider"
+              type="range"
+              min={0}
+              max={80}
+              step={1}
+              value={ratio}
+              aria-valuemin={0}
+              aria-valuemax={80}
+              aria-valuenow={ratio}
+              aria-label="Minimum edge frequency as percent of cases"
+              onChange={(event) => {
+                setRatio(Number(event.target.value))
+                setSelection(null)
+              }}
+            />
+          </label>
+          <ExportBar graph={graph.data} />
+        </div>
       </div>
       <div className="border-b border-[var(--color-line)] px-4 py-2 md:px-6">
         <FilterBar />

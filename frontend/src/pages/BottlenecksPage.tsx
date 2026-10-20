@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 import {
   Bar,
   BarChart,
@@ -17,6 +18,9 @@ import { useDataset } from "../state.tsx"
 
 export function BottlenecksPage() {
   const { dataset, datasetId, query } = useDataset()
+  const queryClient = useQueryClient()
+  const [modelText, setModelText] = useState("")
+  const [modelError, setModelError] = useState<string | null>(null)
   const insights = useQuery({
     queryKey: ["insights", datasetId, query],
     enabled: Boolean(datasetId),
@@ -31,6 +35,37 @@ export function BottlenecksPage() {
     queryKey: ["conformance", datasetId, query],
     enabled: Boolean(datasetId),
     queryFn: () => api.conformance(datasetId ?? "", query),
+  })
+  useEffect(() => {
+    if (!conformance.data) return
+    setModelText(
+      conformance.data.allowed_transitions
+        .map((item) => `${item.source} -> ${item.target}`)
+        .join("\n"),
+    )
+  }, [conformance.data])
+  const saveModel = useMutation({
+    mutationFn: async () => {
+      if (!datasetId) return
+      const transitions = modelText
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const parts = line.split(/\s*->\s*/)
+          if (parts.length !== 2 || !parts[0] || !parts[1]) {
+            throw new Error(`Invalid transition line: ${line}`)
+          }
+          return { source: parts[0], target: parts[1] }
+        })
+      if (transitions.length === 0) throw new Error("Add at least one allowed transition.")
+      return api.saveConformance(datasetId, transitions)
+    },
+    onSuccess: async () => {
+      setModelError(null)
+      await queryClient.invalidateQueries({ queryKey: ["conformance", datasetId] })
+    },
+    onError: (err: Error) => setModelError(err.message),
   })
   if (!dataset) {
     return <EmptyBlock title="No event log yet" body="Bottleneck cards appear after an import." action={<ImportLink />} />
@@ -84,7 +119,7 @@ export function BottlenecksPage() {
         </div>
       </section>
       {conformance.data ? (
-        <section className="rounded-3xl border border-[var(--color-line)] bg-[var(--color-card)] p-5">
+        <section data-testid="conformance-panel" className="rounded-3xl border border-[var(--color-line)] bg-[var(--color-card)] p-5">
           <h2 className="text-lg font-semibold">Rule-based conformance</h2>
           <p className="mt-1 text-sm text-[var(--color-muted)]">{conformance.data.method}</p>
           <p className="tabular mt-3 text-3xl font-semibold">
@@ -104,6 +139,25 @@ export function BottlenecksPage() {
               </li>
             ))}
           </ul>
+          <label className="mt-5 grid gap-2 text-sm font-medium">
+            Allowed transitions (one source {"->"} target per line)
+            <textarea
+              data-testid="conformance-model"
+              className="min-h-36 rounded-2xl border border-[var(--color-line)] bg-transparent px-3 py-2 font-mono text-xs"
+              value={modelText}
+              onChange={(event) => setModelText(event.target.value)}
+            />
+          </label>
+          <button
+            type="button"
+            data-testid="conformance-save"
+            className="mt-3 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white"
+            disabled={saveModel.isPending}
+            onClick={() => saveModel.mutate()}
+          >
+            {saveModel.isPending ? "Saving…" : "Save allowed model"}
+          </button>
+          {modelError ? <p className="mt-2 text-sm text-rose-600">{modelError}</p> : null}
         </section>
       ) : null}
       {performance.data ? (

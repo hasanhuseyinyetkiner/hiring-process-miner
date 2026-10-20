@@ -1,0 +1,13 @@
+case_id,activity,timestamp,resource,role,channel,outcome,cost,job_family
+A,Applied,2026-01-01T09:00:00Z,recruiter-1,recruiter,referral,,0,engineering
+A,Screened,2026-01-02T10:00:00Z,recruiter-1,recruiter,referral,,0,engineering
+A,Interview Scheduled,2026-01-03T11:00:00Z,coord-1,coordinator,referral,,0,engineering
+A,Interview Completed,2026-01-20T15:00:00Z,hm-1,hiring_manager,referral,,0,engineering
+A,Offer,2026-01-22T09:00:00Z,recruiter-1,recruiter,referral,,0,engineering
+A,Hired,2026-01-25T12:00:00Z,recruiter-1,recruiter,referral,hired,0,engineering
+B,Applied,2026-01-01T09:30:00Z,recruiter-2,recruiter,agency,,0,design
+B,Screened,2026-01-02T09:00:00Z,recruiter-2,recruiter,agency,,0,design
+B,Rejected,2026-01-03T16:00:00Z,recruiter-2,recruiter,agency,rejected,0,design
+C,Applied,2026-01-05T08:00:00Z,recruiter-1,recruiter,referral,,0,engineering
+C,Screened,2026-01-06T08:00:00Z,recruiter-1,recruiter,referral,,0,engineering
+C,Interview Scheduled,2026-01-06T12:00:00Z,coord-1,coordinator,referral,,0,engineering
