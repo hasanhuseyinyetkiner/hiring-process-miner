@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 10 * 1024 * 1024
     max_rows: int = 50_000
     stale_job_seconds: int = 900
-    seed_on_startup: bool = False
+    seed_on_startup: bool = True
 
     @property
     def cors_origin_list(self) -> list[str]:
