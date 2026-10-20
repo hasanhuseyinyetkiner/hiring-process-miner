@@ -26,6 +26,7 @@ test-results/
 
 # Data, uploads, model caches
 uploads/
+data/
 data/uploads/
 data/private/
 *.sqlite

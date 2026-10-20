@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #7c3aed;
+  --color-accent-strong: #6d28d9;
+  --color-ink: #1c1430;
+  --color-muted: #6b6280;
+  --color-line: #e6e0f2;
+  --color-canvas: #f5f3fb;
+  --color-card: #ffffff;
+}
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+html.dark {
+  --color-ink: #f4f0ff;
+  --color-muted: #b3a8c9;
+  --color-line: #322848;
+  --color-canvas: #0c0a12;
+  --color-card: #161222;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 480px at 0% -10%, rgba(124, 58, 237, 0.18), transparent 55%),
+    var(--color-canvas);
+}
+
+html.dark body {
+  background:
+    radial-gradient(900px 420px at 0% -10%, rgba(124, 58, 237, 0.32), transparent 50%),
+    var(--color-canvas);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+}
+
+.react-flow {
+  --xy-background-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
