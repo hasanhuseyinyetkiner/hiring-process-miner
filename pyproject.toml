@@ -1,7 +1,7 @@
 [project]
 name = "hiring-process-miner"
 version = "0.1.0"
-description = "Open-source process mining for hiring funnels, bottlenecks, variants and conformance analysis."
+description = "Process mining for hiring funnels: bottlenecks, variants, and conformance analysis (pandas core; optional AGPL PM4Py)."
 requires-python = ">=3.12"
 readme = "README.md"
 dependencies = [

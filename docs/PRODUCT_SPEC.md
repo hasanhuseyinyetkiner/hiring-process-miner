@@ -1,6 +1,16 @@
+> **Historical document.** Original pre-implementation agent brief (2026-10). **Not** the
+> current product contract. Prefer root [`README.md`](../README.md),
+> [`ARCHITECTURE.md`](ARCHITECTURE.md), [`ENGINEERING_DECISIONS.md`](ENGINEERING_DECISIONS.md),
+> [`METRICS.md`](METRICS.md), [`EVALUATION.md`](EVALUATION.md), and [`DEMO.md`](DEMO.md).
+> Binding design-review overrides: [`REVIEW_AMENDMENTS.md`](REVIEW_AMENDMENTS.md)
+> (especially HPM-1: pandas/NumPy core; PM4Py optional). Notably outdated below: PM4Py as
+> a hard dependency; “802 cases” claims. Shipped seed: **Synthetic hiring log · 800
+> eligible cases** (seed 42). Repository license remains pending — do not treat
+> “open-source” wording below as a license grant.
+
 > **Binding amendments:** read [REVIEW_AMENDMENTS.md](REVIEW_AMENDMENTS.md) first. It overrides any conflicting text below.
 
-# CURSOR AGENT PROMPT — HIRING PROCESS MINER
+# CURSOR AGENT PROMPT — HIRING PROCESS MINER (historical)
 
 You are a senior process-mining researcher, data engineer, Python backend engineer and product-minded frontend developer. Build **Hiring Process Miner**, a complete open-source HR event-log analytics application in this repository. Write working code and test it; don't stop at design documents. Read `.cursor/rules/*.mdc` where present. Favor complete vertical slices and real demo examples.
 

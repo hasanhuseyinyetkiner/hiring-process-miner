@@ -1,32 +1,61 @@
-# React + TypeScript + Vite
+# Hiring Process Miner — frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + TypeScript UI for the local Hiring Process Miner demo. Talks to the
+FastAPI backend on **http://127.0.0.1:8102** and serves the web app on
+**http://127.0.0.1:5102**.
 
-Currently, two official plugins are available:
+This is not the generic Vite template README. Product architecture and KPI contracts:
+[`../docs/ARCHITECTURE.md`](../docs/ARCHITECTURE.md), [`../docs/EVALUATION.md`](../docs/EVALUATION.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+| Piece | Choice |
+| --- | --- |
+| Framework | React 19 + React Router |
+| Build | Vite 8 |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 |
+| Data | TanStack Query |
+| Process map | React Flow (`@xyflow/react`) |
+| Charts | Recharts |
+| Tests | Vitest + Testing Library; Playwright e2e |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Accent color: `#7C3AED`. Light and dark themes via `hpm.theme` in localStorage.
 
-## Expanding the Oxlint configuration
+## Routes
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+| Path | Page |
+| --- | --- |
+| `/` | Overview KPIs |
+| `/import` | CSV upload / synthetic generate + quality panel |
+| `/map` | Directly-follows process map + drawer + export |
+| `/bottlenecks` | Insight cards (numerator, sample size, method) |
+| `/variants` | Path ranking + side-by-side compare |
+| `/cases` | Case explorer |
+| `/methodology` | API-served methodology copy (matches backend constants) |
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Scripts
+
+From this directory (`frontend/`):
+
+```powershell
+pnpm install
+pnpm dev          # http://127.0.0.1:5102 (strictPort)
+pnpm lint
+pnpm typecheck
+pnpm test         # Vitest
+pnpm build
+pnpm e2e          # Playwright workflow (API 8102 + web 5102 required)
+pnpm screenshots  # Writes ../docs/screenshots/*.png
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Proxy / API base: see `src/api/client.ts` (default loopback API).
+
+## Verification (2026-10-20)
+
+| Command | Result |
+| --- | --- |
+| `pnpm test` | 5 passed (3 files) |
+
+Backend must be running for e2e and screenshots. Core analytics live in Python
+(pandas/NumPy); this UI does not embed PM4Py.
