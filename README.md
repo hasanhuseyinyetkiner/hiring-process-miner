@@ -220,15 +220,8 @@ legal advice. The default install path does not include pm4py.
 
 | Doc | Contents |
 | --- | --- |
-| [`docs/DEMO.md`](docs/DEMO.md) | Analyst walkthrough |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Runtime topology |
-| [`docs/ENGINEERING_DECISIONS.md`](docs/ENGINEERING_DECISIONS.md) | Licensing, ordering, causation |
-| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Short HPM-1…3 summaries |
 | [`docs/METRICS.md`](docs/METRICS.md) | KPI definitions + seed-42 figures |
-| [`docs/EVALUATION.md`](docs/EVALUATION.md) | Evaluation narrative |
-| [`docs/SECURITY.md`](docs/SECURITY.md) | Privacy / demo threat model |
-| [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) | MVP boundaries |
-| [`docs/GITHUB_METADATA.md`](docs/GITHUB_METADATA.md) | About text and topics |
 | [`frontend/README.md`](frontend/README.md) | UI ports and screenshots |
 
 <p align="right"><a href="#readme-top">↑ back to top</a></p>
