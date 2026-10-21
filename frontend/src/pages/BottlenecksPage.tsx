@@ -118,6 +118,55 @@ export function BottlenecksPage() {
           </ResponsiveContainer>
         </div>
       </section>
+      {performance.data ? (
+        <section
+          data-testid="transition-latency"
+          className="overflow-x-auto rounded-3xl border border-[var(--color-line)] bg-[var(--color-card)]"
+        >
+          <div className="border-b border-[var(--color-line)] px-4 py-3">
+            <h2 className="text-lg font-semibold">Transition latency</h2>
+            <p className="text-xs text-[var(--color-muted)]">
+              Elapsed time between consecutive events after canonical ordering. Sorted by median descending.
+            </p>
+          </div>
+          <table className="min-w-full text-left text-sm">
+            <thead className="text-xs uppercase tracking-wide text-[var(--color-muted)]">
+              <tr>
+                <th className="px-3 py-2">Transition</th>
+                <th className="px-3 py-2">Median</th>
+                <th className="px-3 py-2">P90</th>
+                <th className="px-3 py-2">Sample</th>
+                <th className="px-3 py-2">Frequency</th>
+                <th className="px-3 py-2">Cases</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...(performance.data.transitions ?? [])]
+                .sort(
+                  (a, b) =>
+                    (b.median_delay_seconds ?? -1) - (a.median_delay_seconds ?? -1) ||
+                    b.frequency - a.frequency,
+                )
+                .map((edge) => (
+                  <tr
+                    key={`${edge.source}->${edge.target}`}
+                    className="border-t border-[var(--color-line)]"
+                    data-testid="latency-row"
+                  >
+                    <td className="px-3 py-2 font-medium">
+                      {edge.source} → {edge.target}
+                    </td>
+                    <td className="tabular px-3 py-2">{formatDuration(edge.median_delay_seconds)}</td>
+                    <td className="tabular px-3 py-2">{formatDuration(edge.p90_delay_seconds)}</td>
+                    <td className="tabular px-3 py-2">{formatCount(edge.delay_sample_size)}</td>
+                    <td className="tabular px-3 py-2">{formatCount(edge.frequency)}</td>
+                    <td className="tabular px-3 py-2">{formatCount(edge.case_count)}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </section>
+      ) : null}
       {conformance.data ? (
         <section data-testid="conformance-panel" className="rounded-3xl border border-[var(--color-line)] bg-[var(--color-card)] p-5">
           <h2 className="text-lg font-semibold">Rule-based conformance</h2>
