@@ -187,7 +187,7 @@ Cards such as “highest median transition delay” always expose:
 
 | Path | Libraries | License note |
 | --- | --- | --- |
-| Default discovery & KPIs | **pandas / NumPy** | Repository license pending owner decision |
+| Default discovery & KPIs | **pandas / NumPy** | Repository MIT; optional pm4py is AGPL upstream |
 | Optional token-replay / alignment | `pm4py` via `uv sync --extra pm4py` | Dependency is **AGPL-3.0-or-later**; review before enabling |
 
 Core pytest must pass without `pm4py` installed (parity tests skip).

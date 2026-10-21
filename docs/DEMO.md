@@ -39,7 +39,7 @@ edges with ≥ 30 observations.
 | Field | Seed-42 value |
 | --- | --- |
 | Edge | Interview Scheduled → Interview Completed |
-| Median | ≈ **14.7 d** in UI (exact ≈ 1 268 568.87 s ≈ 14.6825 d) |
+| Median | ≈ **14.68 d** (exact ≈ 1 268 568.87 s ≈ 14.6825 d; UI often rounds to 14.7 d) |
 | Numerator | 592 transitions |
 | Sample size | 504 distinct cases |
 | Caution | Not a causal root cause; not a hiring recommendation |
@@ -85,7 +85,7 @@ handoff artifact for an ops review — numbers with method, not a root-cause mem
 
 > On the synthetic seed (800 cases, seed 42), Interview Scheduled → Interview Completed
 > has the highest median transition delay among edges with ≥ 30 observations
-> (≈ 14.7 d; n = 592 transitions from 504 cases). This is an observation on the log
+> (≈ 14.68 d; n = 592 transitions from 504 cases). This is an observation on the log
 > (and matches the generator’s long-wait construction). It does not establish why
 > interviews wait in a real organization, and it is not a recommendation to change
 > staffing or reject candidates.

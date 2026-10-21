@@ -1,7 +1,7 @@
 # Engineering decisions
 
 Staff-level product and licensing choices for Hiring Process Miner. Short IDs match
-`docs/DECISIONS.md` and `docs/REVIEW_AMENDMENTS.md`.
+`docs/DECISIONS.md`.
 
 ## HPM-1 — Core analytics are pandas; PM4Py is an optional extra
 
@@ -38,12 +38,12 @@ When the extra is absent, the API reports `available: false` with a clear messag
 rule-based conformance endpoint still returns a fit rate. Core pytest must pass without
 `pm4py` installed (parity tests are skipped).
 
-**License status.** Repository license remains **pending owner decision** (no `LICENSE`
-file in this MVP). The default demo path does not install `pm4py`. Enabling
-`uv sync --extra pm4py` may have licensing implications for that deployment path.
-Have qualified counsel review AGPL implications before hosting a product that links
-PM4Py. This document states dependency facts and does **not** give categorical legal
-conclusions about compliance.
+**License status.** This repository is **MIT** (see root `LICENSE`). The default demo
+path does not install `pm4py`. Enabling `uv sync --extra pm4py` pulls an upstream
+package licensed **AGPL-3.0-or-later** and may have licensing implications for that
+deployment path. Have qualified counsel review AGPL implications before hosting a
+product that links PM4Py. This document states dependency facts and does **not** give
+categorical legal conclusions about compliance.
 
 ## HPM-2 — One ordering contract
 
@@ -99,4 +99,3 @@ stale `RUNNING` jobs `FAILED`. `/health` stays responsive under load (covered by
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Runtime topology and module map |
 | [`METRICS.md`](METRICS.md) | Formal metric definitions |
 | [`EVALUATION.md`](EVALUATION.md) | Evaluation narrative + reproduced seed figures |
-| [`REVIEW_AMENDMENTS.md`](REVIEW_AMENDMENTS.md) | Binding design-review overrides |

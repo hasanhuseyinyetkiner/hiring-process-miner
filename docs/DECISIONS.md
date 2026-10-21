@@ -23,7 +23,7 @@ Token-replay / alignment-style features live behind `hpm.pm4py_adapter` and are 
 imported. When the extra is absent, the API and UI return a clear message; the rule-based
 allowed-transition check still runs. Core pytest must pass without pm4py installed.
 
-License for this repository remains **pending owner decision** (see README).
+This repository is MIT-licensed (root `LICENSE`). Optional `pm4py` remains AGPL upstream.
 
 ## HPM-2 — One ordering contract
 

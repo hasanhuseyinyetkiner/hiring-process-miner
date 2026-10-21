@@ -11,12 +11,6 @@ GitHub About has a short character limit. Prefer:
 Process mining for hiring funnels — DFG, bottlenecks, variants, conformance. pandas core; optional AGPL PM4Py.
 ```
 
-Alternate (matches product pitch, slightly longer):
-
-```
-Open-source process mining for hiring funnels, bottlenecks, variants and conformance analysis.
-```
-
 ## Topics
 
 ```
@@ -43,9 +37,7 @@ Leave empty until a stable public demo URL exists.
 
 ## Suggested pin rationale (portfolio)
 
-Use when pinning among HR portfolio repos:
-
-> Hiring Process Miner — staff-level process-mining case study: explainable KPIs,
+> Hiring Process Miner — process-mining case study: explainable KPIs,
 > observation≠causation discipline, AGPL-aware optional PM4Py, interactive DFG.
 
 ## Release notes checklist
@@ -54,12 +46,11 @@ When cutting a tagged release (owner-driven; no push from agents without approva
 
 1. Confirm README test table matches a fresh local or CI run.
 2. Confirm screenshots in `docs/screenshots/` match ports 5102/8102 and violet `#7C3AED`.
-3. Confirm seed copy: **800** eligible cases (seed 42), bottleneck ≈ **14.7 d** with
+3. Confirm seed copy: **800** eligible cases (seed 42), bottleneck ≈ **14.68 d** with
    numerator/sample/method — see [`EVALUATION.md`](EVALUATION.md).
 4. State whether the release includes the `pm4py` optional extra or not; note license
    review for that path.
-5. Reaffirm: license pending; synthetic data only; not a hiring decision engine.
-6. Walk [`RELEASE_READINESS.md`](RELEASE_READINESS.md).
+5. Reaffirm: MIT for this repo; synthetic data only; not a hiring decision engine.
 
 ## Notes
 
@@ -67,5 +58,3 @@ When cutting a tagged release (owner-driven; no push from agents without approva
   `.github/workflows/ci.yml`.
 - Prefer evidence from `uv run pytest`, `pnpm test`, Playwright, and Actions — never
   aspirational numbers.
-- [`PRODUCT_SPEC.md`](PRODUCT_SPEC.md) is historical; do not sync About text from it
-  without checking current docs.

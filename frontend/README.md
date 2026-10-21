@@ -26,10 +26,10 @@ Accent color: `#7C3AED`. Light and dark themes via `hpm.theme` in localStorage.
 
 | Path | Page |
 | --- | --- |
-| `/` | Overview KPIs |
+| `/` | Overview KPIs, operational telemetry, data hygiene |
 | `/import` | CSV upload / synthetic generate + quality panel |
 | `/map` | Directly-follows process map + drawer + export |
-| `/bottlenecks` | Insight cards (numerator, sample size, method) |
+| `/bottlenecks` | Insight cards + transition latency table |
 | `/variants` | Path ranking + side-by-side compare |
 | `/cases` | Case explorer |
 | `/methodology` | API-served methodology copy (matches backend constants) |

@@ -128,5 +128,4 @@ flowchart LR
 - [`METRICS.md`](METRICS.md) — formal definitions and seed-42 reproduction
 - [`EVALUATION.md`](EVALUATION.md) — analytical evaluation summary
 - [`DEMO.md`](DEMO.md) — analyst case study with screenshots
-- [`RELEASE_READINESS.md`](RELEASE_READINESS.md) — pre-release checklist
 - [`GITHUB_METADATA.md`](GITHUB_METADATA.md) — About box and topics

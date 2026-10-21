@@ -8,8 +8,8 @@ Honest boundaries of this MVP. Nothing here is a production hiring platform clai
 - **Observation ≠ causation.** Delays and drop-offs describe the event log only.
 - **Single timestamp per event.** Transition delay is elapsed time, not processing time.
 - **CSV only.** XES import is not shipped.
-- **No multi-user auth.** Loopback demo; unsuitable for shared production without auth,
-  tenancy, and a license decision.
+- **No multi-user auth.** Loopback demo; unsuitable for shared production without auth
+  and tenancy.
 - **Synthetic demo data.** Seeded log is generated; never real candidate PII.
 
 ## Analytics
@@ -30,7 +30,7 @@ Honest boundaries of this MVP. Nothing here is a production hiring platform clai
 
 ## Licensing
 
-- Repository license: **pending owner decision** (no `LICENSE` file in this MVP).
+- Repository license: **MIT** (root `LICENSE`).
 - Optional `pm4py` extra depends on a package licensed **AGPL-3.0-or-later** — see
   [`ENGINEERING_DECISIONS.md`](ENGINEERING_DECISIONS.md). Review with counsel before
   enabling in a deployment you distribute or host; docs here are not legal advice.
