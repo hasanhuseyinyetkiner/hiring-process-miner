@@ -9,7 +9,8 @@
     "lint": "eslint src",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
-    "e2e": "playwright test e2e/workflow.spec.ts",
+    "e2e": "playwright test e2e/workflow.spec.ts e2e/a11y.spec.ts",
+    "test:e2e": "playwright test e2e/workflow.spec.ts e2e/a11y.spec.ts",
     "screenshots": "playwright test e2e/screenshots.spec.ts",
     "preview": "vite preview --host 127.0.0.1 --port 5102 --strictPort"
   },

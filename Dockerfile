@@ -9,6 +9,8 @@ RUN uv sync --frozen --no-dev --no-install-project
 COPY alembic.ini ./
 COPY alembic ./alembic
 COPY src ./src
+# Hatchling reads project.readme during editable install; must exist before this sync.
+COPY README.md ./
 RUN uv sync --frozen --no-dev
 
 ENV PATH="/srv/app/.venv/bin:$PATH" \

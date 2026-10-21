@@ -123,9 +123,22 @@ export interface ProcessEdge {
   frequency: number
   case_count: number
   case_ratio: number
+  mean_delay_seconds: number | null
   median_delay_seconds: number | null
   p90_delay_seconds: number | null
+  p95_delay_seconds: number | null
   delay_sample_size: number
+}
+
+export interface FilterImpact {
+  cases_before: number
+  cases_after: number
+  cases_retained_ratio: number | null
+  events_before: number
+  events_after: number
+  events_retained_ratio: number | null
+  definition: string
+  caution: string
 }
 
 export interface ProcessGraph {
@@ -138,6 +151,7 @@ export interface ProcessGraph {
   edges_after_filter: number
   ordering: string
   delay_definition: string
+  filter_impact?: FilterImpact
 }
 
 export interface InsightCard {
@@ -171,8 +185,10 @@ export interface Performance {
   cycle_time: {
     sample_size: number
     sample_definition: string
+    mean_seconds: number | null
     median_seconds: number | null
     p90_seconds: number | null
+    p95_seconds: number | null
     method: string
   }
   transitions: Array<{
@@ -180,20 +196,29 @@ export interface Performance {
     target: string
     frequency: number
     case_count: number
+    mean_delay_seconds: number | null
     median_delay_seconds: number | null
     p90_delay_seconds: number | null
+    p95_delay_seconds: number | null
     delay_sample_size: number
   }>
   active_aging: {
     as_of: string | null
     as_of_definition: string
     sample_size: number
+    mean_seconds_since_last_event: number | null
     median_seconds_since_last_event: number | null
     p90_seconds_since_last_event: number | null
+    p95_seconds_since_last_event: number | null
+    mean_seconds_since_start: number | null
+    median_seconds_since_start: number | null
+    p90_seconds_since_start: number | null
+    p95_seconds_since_start: number | null
     method: string
   }
   processing_time: null
   processing_time_reason: string
+  filter_impact?: FilterImpact
 }
 
 export interface Funnel {
@@ -221,7 +246,10 @@ export interface Variant {
   share: number | null
   sample_size: number
   completed_cases: number
+  mean_cycle_seconds: number | null
   median_cycle_seconds: number | null
+  p90_cycle_seconds: number | null
+  p95_cycle_seconds: number | null
   cycle_sample_size: number
   outcomes: Record<string, number>
   event_length: number

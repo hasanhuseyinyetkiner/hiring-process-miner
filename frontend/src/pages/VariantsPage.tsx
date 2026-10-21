@@ -76,7 +76,10 @@ export function VariantsPage() {
                 <td className="tabular px-3 py-2">{formatCount(variant.case_count)}</td>
                 <td className="px-3 py-2">{formatShare(variant.share)}</td>
                 <td className="px-3 py-2">
-                  {formatDuration(variant.median_cycle_seconds)}
+                  mean {formatDuration(variant.mean_cycle_seconds)} · median{" "}
+                  {formatDuration(variant.median_cycle_seconds)} · P90{" "}
+                  {formatDuration(variant.p90_cycle_seconds)} · P95{" "}
+                  {formatDuration(variant.p95_cycle_seconds)}
                   <span className="block text-xs text-[var(--color-muted)]">
                     n={formatCount(variant.cycle_sample_size)}
                   </span>
@@ -130,14 +133,27 @@ function CompareCard({
   variant,
 }: {
   title: string
-  variant: { case_count: number; median_cycle_seconds: number | null; cycle_sample_size: number; outcomes: Record<string, number> } | null
+  variant: {
+    case_count: number
+    mean_cycle_seconds: number | null
+    median_cycle_seconds: number | null
+    p90_cycle_seconds: number | null
+    p95_cycle_seconds: number | null
+    cycle_sample_size: number
+    outcomes: Record<string, number>
+  } | null
 }) {
   if (!variant) return <p className="text-sm">Variant {title} was not in the current filter.</p>
   return (
     <article className="rounded-2xl bg-[var(--color-canvas)] p-3 text-sm">
       <h3 className="font-semibold">Variant {title}</h3>
       <p className="tabular mt-1">{formatCount(variant.case_count)} cases</p>
-      <p>Median cycle {formatDuration(variant.median_cycle_seconds)} (n={formatCount(variant.cycle_sample_size)})</p>
+      <p>
+        Mean {formatDuration(variant.mean_cycle_seconds)}, median{" "}
+        {formatDuration(variant.median_cycle_seconds)}, P90{" "}
+        {formatDuration(variant.p90_cycle_seconds)}, P95{" "}
+        {formatDuration(variant.p95_cycle_seconds)} (n={formatCount(variant.cycle_sample_size)})
+      </p>
       <p>{Object.entries(variant.outcomes).map(([name, count]) => `${name} ${count}`).join(", ")}</p>
     </article>
   )

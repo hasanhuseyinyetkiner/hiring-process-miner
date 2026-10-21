@@ -133,8 +133,10 @@ export function BottlenecksPage() {
             <thead className="text-xs uppercase tracking-wide text-[var(--color-muted)]">
               <tr>
                 <th className="px-3 py-2">Transition</th>
+                <th className="px-3 py-2">Mean</th>
                 <th className="px-3 py-2">Median</th>
                 <th className="px-3 py-2">P90</th>
+                <th className="px-3 py-2">P95</th>
                 <th className="px-3 py-2">Sample</th>
                 <th className="px-3 py-2">Frequency</th>
                 <th className="px-3 py-2">Cases</th>
@@ -156,8 +158,10 @@ export function BottlenecksPage() {
                     <td className="px-3 py-2 font-medium">
                       {edge.source} → {edge.target}
                     </td>
+                    <td className="tabular px-3 py-2">{formatDuration(edge.mean_delay_seconds)}</td>
                     <td className="tabular px-3 py-2">{formatDuration(edge.median_delay_seconds)}</td>
                     <td className="tabular px-3 py-2">{formatDuration(edge.p90_delay_seconds)}</td>
+                    <td className="tabular px-3 py-2">{formatDuration(edge.p95_delay_seconds)}</td>
                     <td className="tabular px-3 py-2">{formatCount(edge.delay_sample_size)}</td>
                     <td className="tabular px-3 py-2">{formatCount(edge.frequency)}</td>
                     <td className="tabular px-3 py-2">{formatCount(edge.case_count)}</td>
@@ -211,7 +215,9 @@ export function BottlenecksPage() {
       ) : null}
       {performance.data ? (
         <p className="text-xs text-[var(--color-muted)]">
-          Cycle-time median {formatDuration(performance.data.cycle_time.median_seconds)} on{" "}
+          Cycle time mean {formatDuration(performance.data.cycle_time.mean_seconds)}, median{" "}
+          {formatDuration(performance.data.cycle_time.median_seconds)}, P90{" "}
+          {formatDuration(performance.data.cycle_time.p90_seconds)} on{" "}
           {formatCount(performance.data.cycle_time.sample_size)} completed cases.{" "}
           {performance.data.processing_time_reason}
         </p>

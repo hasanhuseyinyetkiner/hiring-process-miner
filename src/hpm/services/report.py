@@ -36,29 +36,41 @@ def render_summary_csv(dataset: Dataset, performance: dict, funnel_payload: dict
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(["section", "name", "numerator", "sample_size", "value", "unit", "method"])
     cycle = performance["cycle_time"]
-    writer.writerow(
-        [
-            "cycle_time",
-            "median",
-            _cell(cycle["sample_size"]),
-            _cell(cycle["sample_size"]),
-            _cell(cycle["median_seconds"]),
-            "seconds",
-            _cell(cycle["method"]),
-        ]
-    )
-    for edge in performance["transitions"]:
+    for name, key in (
+        ("mean", "mean_seconds"),
+        ("median", "median_seconds"),
+        ("p90", "p90_seconds"),
+        ("p95", "p95_seconds"),
+    ):
         writer.writerow(
             [
-                "transition",
-                f"{edge['source']} → {edge['target']}",
-                _cell(edge["frequency"]),
-                _cell(edge["case_count"]),
-                _cell(edge["median_delay_seconds"]),
+                "cycle_time",
+                name,
+                _cell(cycle["sample_size"]),
+                _cell(cycle["sample_size"]),
+                _cell(cycle[key]),
                 "seconds",
-                "median transition delay; not processing time",
+                _cell(cycle["method"]),
             ]
         )
+    for edge in performance["transitions"]:
+        for name, key in (
+            ("mean", "mean_delay_seconds"),
+            ("median", "median_delay_seconds"),
+            ("p90", "p90_delay_seconds"),
+            ("p95", "p95_delay_seconds"),
+        ):
+            writer.writerow(
+                [
+                    "transition",
+                    f"{edge['source']} → {edge['target']} ({name})",
+                    _cell(edge["frequency"]),
+                    _cell(edge["case_count"]),
+                    _cell(edge[key]),
+                    "seconds",
+                    f"{name} transition delay; not processing time; not a causal claim",
+                ]
+            )
     for stage in funnel_payload["stages"]:
         writer.writerow(
             [
@@ -103,8 +115,10 @@ def render_html(
                 f"{edge['source']} → {edge['target']}",
                 edge["frequency"],
                 edge["case_count"],
+                edge["mean_delay_seconds"],
                 edge["median_delay_seconds"],
                 edge["p90_delay_seconds"],
+                edge["p95_delay_seconds"],
             ]
         )
         for edge in performance["transitions"]
@@ -161,12 +175,17 @@ def render_html(
     <li>{html.escape(PRIVACY_NOTICE)}</li>
   </ul>
   <h2>Cycle time</h2>
-  <p>Median {cycle["median_seconds"]} seconds. P90 {cycle["p90_seconds"]} seconds.
-  Sample size {cycle["sample_size"]} completed cases.</p>
+  <p>Mean {cycle["mean_seconds"]} seconds. Median {cycle["median_seconds"]} seconds.
+  P90 {cycle["p90_seconds"]} seconds. P95 {cycle["p95_seconds"]} seconds.
+  Sample size {cycle["sample_size"]} completed cases.
+  These are observations on the event log, not causal claims.</p>
   {cards}
   <h2>Transition delays</h2>
   <table>
-    <tr><th>Edge</th><th>Transitions</th><th>Cases</th><th>Median seconds</th><th>P90 seconds</th></tr>
+    <tr>
+      <th>Edge</th><th>Transitions</th><th>Cases</th>
+      <th>Mean seconds</th><th>Median seconds</th><th>P90 seconds</th><th>P95 seconds</th>
+    </tr>
     {transition_rows}
   </table>
   <h2>Funnel</h2>

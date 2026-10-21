@@ -20,6 +20,7 @@ from hpm.domain.constants import (
     MIN_OBSERVATIONS,
     ORDERING_CONTRACT,
     P90_METHOD,
+    P95_METHOD,
     PROCESSING_TIME_REASON,
 )
 from hpm.domain.filters import FilterSpec, apply_filters
@@ -67,8 +68,10 @@ def _edge_rows(records: list[dict[str, object]]) -> list[dict[str, object]]:
                 "target": target,
                 "frequency": int(stats["n"]),
                 "case_count": len(cases),
+                "mean_delay_seconds": stats["mean"],
                 "median_delay_seconds": stats["median"],
                 "p90_delay_seconds": stats["p90"],
+                "p95_delay_seconds": stats["p95"],
                 "delay_sample_size": int(stats["n"]),
             }
         )
@@ -141,8 +144,10 @@ def _stage_time_to_next(records: list[dict[str, object]]) -> list[dict[str, obje
             {
                 "activity": activity,
                 "sample_size": int(stats["n"]),
+                "mean_seconds": stats["mean"],
                 "median_seconds": stats["median"],
                 "p90_seconds": stats["p90"],
+                "p95_seconds": stats["p95"],
                 "method": (
                     "Time from this event until the next event in the same case. "
                     + DELAY_DEFINITION
@@ -196,10 +201,15 @@ def performance(
                 "Completed cases with a non-negative span from the first event to the "
                 "earliest terminal event. Ongoing cases are excluded."
             ),
+            "mean_seconds": cycle_stats["mean"],
             "median_seconds": cycle_stats["median"],
             "p90_seconds": cycle_stats["p90"],
-            "method": f"{CYCLE_TIME_DEFINITION} Median: {cycle_stats['median_method']}. "
-            f"P90: {cycle_stats['p90_method']}.",
+            "p95_seconds": cycle_stats["p95"],
+            "method": (
+                f"{CYCLE_TIME_DEFINITION} Mean: {cycle_stats['mean_method']}. "
+                f"Median: {cycle_stats['median_method']}. P90: {cycle_stats['p90_method']}. "
+                f"P95: {cycle_stats['p95_method']}."
+            ),
         },
         "transitions": _edge_rows(records),
         "stage_time_to_next": _stage_time_to_next(records),
@@ -208,10 +218,14 @@ def performance(
             "as_of_definition": AS_OF_DEFINITION,
             "sample_size": int(last_stats["n"]),
             "invalid_age_cases": invalid_age,
+            "mean_seconds_since_last_event": last_stats["mean"],
             "median_seconds_since_last_event": last_stats["median"],
             "p90_seconds_since_last_event": last_stats["p90"],
+            "p95_seconds_since_last_event": last_stats["p95"],
+            "mean_seconds_since_start": start_stats["mean"],
             "median_seconds_since_start": start_stats["median"],
             "p90_seconds_since_start": start_stats["p90"],
+            "p95_seconds_since_start": start_stats["p95"],
             "method": (
                 "Ongoing cases only. Age is as_of minus the last event, and as_of minus "
                 "the first event. Negative ages are excluded and counted."
@@ -288,7 +302,10 @@ def _variant_payload(traces: list[CaseTrace], key: str, rank: int, total: int) -
         "sample_size": total,
         "sample_definition": "Distinct cases in the filtered log.",
         "completed_cases": sum(1 for trace in traces if trace.completed),
+        "mean_cycle_seconds": stats["mean"],
         "median_cycle_seconds": stats["median"],
+        "p90_cycle_seconds": stats["p90"],
+        "p95_cycle_seconds": stats["p95"],
         "cycle_sample_size": int(stats["n"]),
         "cycle_method": CYCLE_TIME_DEFINITION,
         "outcomes": dict(sorted(outcomes.items())),
@@ -448,10 +465,16 @@ def _delay_card(
     min_observations: int,
 ) -> dict[str, object]:
     eligible = [row for row in rows if int(row["frequency"]) >= min_observations]
+    if "p95" in value_key:
+        percentile_method = P95_METHOD
+    elif "p90" in value_key:
+        percentile_method = P90_METHOD
+    else:
+        percentile_method = "numpy.median"
     method = (
         f"{DELAY_DEFINITION} The {adjective} is taken over edges with at least "
         f"{min_observations} observed transitions. {value_key} uses "
-        f"{P90_METHOD if 'p90' in value_key else 'numpy.median'}."
+        f"{percentile_method}."
     )
     if not eligible:
         return {

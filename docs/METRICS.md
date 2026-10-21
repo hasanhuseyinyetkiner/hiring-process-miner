@@ -85,10 +85,36 @@ Elapsed UTC seconds between two **consecutive** events in a case after canonical
 ordering. Each event has one timestamp, so delay is **not** labeled processing time or
 active work (`DELAY_DEFINITION`).
 
+- Mean: `numpy.mean` (arithmetic mean of the sample).
 - Median: `numpy.median` (average of the two central values when *n* is even).
 - p90: `numpy.percentile(values, 90, method='linear')`.
+- p95: `numpy.percentile(values, 95, method='linear')` (tail companion to p90).
+- API payloads and the Bottlenecks latency table expose **mean / median / p90 / p95** so
+  skewed tails are visible without implying causation.
 - Negative spans are discarded (not clamped) and counted separately where applicable.
 - Insight delay cards require `MIN_OBSERVATIONS = 30` transitions on the edge.
+
+## Filtering impact
+
+When cohort filters are applied, process and performance API payloads include
+`filter_impact`: cases/events before vs after the `FilterSpec`, with retention ratios and
+`CAUSAL_CAUTION`. This is a retention diagnostic on the filtered log — not a claim that
+the filter “caused” KPI changes.
+
+## Timestamp outlier policy
+
+Source of truth: `TIMESTAMP_OUTLIER_POLICY` in `src/hpm/domain/constants.py`.
+
+| Situation | Behavior |
+| --- | --- |
+| Ambiguous DST fall-back local time | Excluded (`ambiguous_local_time`) |
+| Nonexistent spring-forward local time | Excluded (`nonexistent_local_time`) |
+| Unparseable timestamp | Excluded (`timestamp_parse_failure`) |
+| Aware offset timestamps | Converted to UTC directly |
+| Extreme but parseable instants | **Retained** (no far-past / far-future drop) |
+| Negative elapsed spans | Discarded and counted — **never clamped** to zero |
+
+Tests: `tests/test_timestamps.py`, `tests/test_timestamp_outliers.py`.
 
 ### Seed 42 leading bottleneck (reproduced)
 

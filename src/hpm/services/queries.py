@@ -8,7 +8,7 @@ from sqlalchemy import select
 
 from hpm.db import session_scope
 from hpm.domain.constants import DEFAULT_ALLOWED_TRANSITIONS
-from hpm.domain.filters import FilterSpec
+from hpm.domain.filters import FilterSpec, filter_impact
 from hpm.domain.metrics import (
     case_detail,
     cases_page,
@@ -58,6 +58,14 @@ def dataset_frame(dataset_id: str, spec: FilterSpec | None = None):
     return prepare(frame_from_parsed(events), spec)
 
 
+def _frames(dataset_id: str, spec: FilterSpec):
+    _dataset, events = _load(dataset_id)
+    base = frame_from_parsed(events)
+    unfiltered = prepare(base)
+    filtered = prepare(base, spec)
+    return unfiltered, filtered
+
+
 def quality_for(dataset_id: str) -> dict:
     dataset, events = _load(dataset_id)
     report = quality_report(events, timezone=dataset.timezone)
@@ -68,11 +76,17 @@ def quality_for(dataset_id: str) -> dict:
 
 
 def process_for(dataset_id: str, spec: FilterSpec, min_case_ratio: float) -> dict:
-    return directly_follows(dataset_frame(dataset_id, spec), min_case_ratio=min_case_ratio)
+    unfiltered, filtered = _frames(dataset_id, spec)
+    payload = directly_follows(filtered, min_case_ratio=min_case_ratio)
+    payload["filter_impact"] = filter_impact(unfiltered, filtered)
+    return payload
 
 
 def performance_for(dataset_id: str, spec: FilterSpec, as_of):
-    return performance(dataset_frame(dataset_id, spec), as_of=as_of)
+    unfiltered, filtered = _frames(dataset_id, spec)
+    payload = performance(filtered, as_of=as_of)
+    payload["filter_impact"] = filter_impact(unfiltered, filtered)
+    return payload
 
 
 def funnel_for(dataset_id: str, spec: FilterSpec) -> dict:

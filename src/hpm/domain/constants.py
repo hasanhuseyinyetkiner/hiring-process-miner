@@ -82,8 +82,18 @@ PRIVACY_NOTICE = (
 PROCESSING_TIME_REASON = (
     "Each event has one timestamp, so transition delay is not labeled as processing time."
 )
+MEAN_METHOD = "numpy.mean (arithmetic mean of the sample)"
 MEDIAN_METHOD = "numpy.median (average of the two central values when the count is even)"
 P90_METHOD = "numpy.percentile(values, 90, method='linear')"
+P95_METHOD = "numpy.percentile(values, 95, method='linear')"
+TIMESTAMP_OUTLIER_POLICY = (
+    "Timestamp outliers are handled at parse time, not by clamping delays. "
+    "Ambiguous DST fall-back and nonexistent spring-forward local times are excluded "
+    "(no single UTC instant). Unparseable timestamps are excluded. Aware offsets convert "
+    "directly to UTC; naive stamps use the declared IANA timezone. Extreme but parseable "
+    "instants remain eligible — analytics do not drop far-past or far-future values. "
+    "Negative elapsed spans are discarded and counted, never clamped to zero."
+)
 PM4PY_UNAVAILABLE = (
     "Token replay and alignment conformance need the optional pm4py extra "
     "(AGPL-3.0-or-later). It is not installed. The rule-based conformance result does "

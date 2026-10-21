@@ -7,6 +7,7 @@ from datetime import datetime
 
 import pandas as pd
 
+from hpm.domain.constants import CAUSAL_CAUTION
 from hpm.domain.ordering import canonical_order
 from hpm.domain.traces import CaseTrace, build_traces
 
@@ -65,3 +66,29 @@ def apply_filters(df: pd.DataFrame | None, spec: FilterSpec) -> pd.DataFrame:
     if not keep:
         return frame.iloc[0:0].copy()
     return frame.loc[frame["case_id"].isin(keep)].reset_index(drop=True)
+
+
+def filter_impact(
+    before: pd.DataFrame | None,
+    after: pd.DataFrame | None,
+) -> dict[str, object]:
+    """Retention diagnostics for an applied filter. Observation only — not causation."""
+    before_frame = canonical_order(before)
+    after_frame = canonical_order(after)
+    cases_before = len(build_traces(before_frame))
+    cases_after = len(build_traces(after_frame))
+    events_before = int(len(before_frame))
+    events_after = int(len(after_frame))
+    return {
+        "cases_before": cases_before,
+        "cases_after": cases_after,
+        "cases_retained_ratio": (cases_after / cases_before) if cases_before else None,
+        "events_before": events_before,
+        "events_after": events_after,
+        "events_retained_ratio": (events_after / events_before) if events_before else None,
+        "definition": (
+            "Counts of distinct cases and event rows before versus after the active "
+            "FilterSpec. Retention ratios describe the filtered log only."
+        ),
+        "caution": CAUSAL_CAUTION,
+    }

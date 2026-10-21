@@ -12,27 +12,36 @@ Case C (ongoing), same timestamp on Screened and Interview Scheduled.
     Cycle time is excluded.
 
 Applied → Screened delays: 2d, 1d, 1d = 172800, 86400, 86400
+    mean = (172800 + 86400 + 86400) / 3 = 115200
     sorted 86400, 86400, 172800
     median = 86400
     p90 linear index = 0.9 * (3 - 1) = 1.8
     value = 86400 + 0.8 * (172800 - 86400) = 155520
+    p95 linear index = 0.95 * (3 - 1) = 1.9
+    value = 86400 + 0.9 * (172800 - 86400) = 164160
 
 Screened → Interview Scheduled delays: 1d and 0
+    mean = 43200
     median = 43200
     p90 linear index = 0.9 * (2 - 1) = 0.9
     value = 0 + 0.9 * 86400 = 77760
+    p95 linear index = 0.95
+    value = 0 + 0.95 * 86400 = 82080
 
 Completed cycle times: 2073600 and 172800
+    mean = (2073600 + 172800) / 2 = 1123200
     median = (2073600 + 172800) / 2 = 1123200
     p90 index = 0.9
     value = 172800 + 0.9 * (2073600 - 172800) = 1883520
+    p95 index = 0.95
+    value = 172800 + 0.95 * (2073600 - 172800) = 1978560
 """
 
 from datetime import datetime
 
 from tests.helpers import at, frame
 
-from hpm.domain.filters import FilterSpec
+from hpm.domain.filters import FilterSpec, filter_impact
 from hpm.domain.metrics import (
     conformance,
     directly_follows,
@@ -170,13 +179,17 @@ def test_graph_edge_counts_and_delays_match_hand_calculation() -> None:
     applied = edges[("Applied", "Screened")]
     assert applied["frequency"] == 3
     assert applied["case_count"] == 3
+    assert applied["mean_delay_seconds"] == 115200
     assert applied["median_delay_seconds"] == DAY
     assert applied["p90_delay_seconds"] == 155520
+    assert applied["p95_delay_seconds"] == 164160
     scheduled = edges[("Screened", "Interview Scheduled")]
     assert scheduled["frequency"] == 2
     assert scheduled["case_count"] == 2
+    assert scheduled["mean_delay_seconds"] == DAY / 2
     assert scheduled["median_delay_seconds"] == DAY / 2
     assert scheduled["p90_delay_seconds"] == 77760
+    assert scheduled["p95_delay_seconds"] == 82080
     bottleneck = edges[("Interview Scheduled", "Interview Completed")]
     assert bottleneck["frequency"] == 1
     assert bottleneck["median_delay_seconds"] == 16 * DAY
@@ -193,8 +206,10 @@ def test_cycle_time_excludes_ongoing_cases() -> None:
     assert perf["completed_cases"] == 2
     assert perf["ongoing_cases"] == 1
     assert perf["cycle_time"]["sample_size"] == 2
+    assert perf["cycle_time"]["mean_seconds"] == 1123200
     assert perf["cycle_time"]["median_seconds"] == 1123200
     assert perf["cycle_time"]["p90_seconds"] == 1883520
+    assert perf["cycle_time"]["p95_seconds"] == 1978560
     assert perf["processing_time"] is None
     assert "not labeled as processing time" in str(perf["processing_time_reason"])
     assert perf["excluded_negative_cycle_cases"] == 0
@@ -352,11 +367,17 @@ def test_filters_change_graph_and_performance_together() -> None:
     perf_filtered = performance(filtered)
     funnel_all = funnel(golden())
     funnel_filtered = funnel(filtered)
+    impact = filter_impact(golden(), filtered)
     assert graph["total_cases"] == 3
     assert graph_filtered["total_cases"] == 2
     assert graph_filtered["total_cases"] == perf_filtered["total_cases"]
     assert funnel_filtered["denominator"] == 2
     assert funnel_filtered["denominator"] < funnel_all["denominator"]
+    assert impact["cases_before"] == 3
+    assert impact["cases_after"] == 2
+    assert impact["cases_retained_ratio"] == 2 / 3
+    assert impact["events_after"] < impact["events_before"]
+    assert "not a causal" in str(impact["caution"]).lower()
     ongoing = apply_filters(golden(), FilterSpec(case_status="ongoing"))
     assert directly_follows(ongoing)["total_cases"] == 1
     assert performance(ongoing)["completed_cases"] == 0

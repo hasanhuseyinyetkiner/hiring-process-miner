@@ -2,10 +2,9 @@
 
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
-  <img alt="Hiring Process Miner — from event logs to explainable insights" src="docs/assets/banner-light.svg" width="100%">
-</picture>
+<p align="center">
+  <img src="docs/assets/logo.png" alt="Hiring Process Miner logo — See the process. Find the opportunities." width="560">
+</p>
 
 [![CI](https://github.com/hasanhuseyinyetkiner/hiring-process-miner/actions/workflows/ci.yml/badge.svg)](https://github.com/hasanhuseyinyetkiner/hiring-process-miner/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -18,6 +17,15 @@ conformance. Every insight shows numerator, sample size, and method.
 [Why](#why-it-exists) · [Demo](#demo) · [Architecture](#architecture) · [Quick start](#quick-start) · [Docs](#documentation)
 
 </div>
+
+## For HR and talent leaders
+
+| Question | What this tool gives you |
+| --- | --- |
+| **Where do candidates wait?** | Stage-to-stage latency with mean, median and P90, always with sample size. |
+| **Where does the funnel leak or loop?** | Skips, rework and unfinished cases are shown, not hidden. |
+| **Can I trust the data?** | A hygiene inspector lists every excluded event and why. |
+| **What it is not** | A bottleneck is an observation, not a cause. No hiring decisions. Anonymized or synthetic logs only. |
 
 ## Why it exists
 
@@ -221,7 +229,12 @@ legal advice. The default install path does not include pm4py.
 | Doc | Contents |
 | --- | --- |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Runtime topology |
+| [`docs/ENGINEERING_DECISIONS.md`](docs/ENGINEERING_DECISIONS.md) | Ordering, QX, PM4Py boundary |
 | [`docs/METRICS.md`](docs/METRICS.md) | KPI definitions + seed-42 figures |
+| [`docs/EVALUATION.md`](docs/EVALUATION.md) | Reproduction commands |
+| [`docs/DEMO.md`](docs/DEMO.md) | Longer walkthrough |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | Loopback / AGPL notes |
+| [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) | Honest constraints |
 | [`frontend/README.md`](frontend/README.md) | UI ports and screenshots |
 
 <p align="right"><a href="#readme-top">↑ back to top</a></p>

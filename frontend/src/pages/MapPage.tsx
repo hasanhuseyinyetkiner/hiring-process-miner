@@ -104,8 +104,10 @@ export function MapPage() {
                 <Row term="Transitions" value={formatCount(selection.edge.frequency)} />
                 <Row term="Cases" value={formatCount(selection.edge.case_count)} />
                 <Row term="Share of cases" value={formatShare(selection.edge.case_ratio)} />
+                <Row term="Mean delay" value={delayLabel(selection.edge.mean_delay_seconds)} />
                 <Row term="Median delay" value={delayLabel(selection.edge.median_delay_seconds)} />
                 <Row term="P90 delay" value={delayLabel(selection.edge.p90_delay_seconds)} />
+                <Row term="P95 delay" value={delayLabel(selection.edge.p95_delay_seconds)} />
                 <Row term="Delay sample" value={formatCount(selection.edge.delay_sample_size)} />
                 <p className="text-[var(--color-muted)]">{graph.data?.delay_definition}</p>
               </dl>

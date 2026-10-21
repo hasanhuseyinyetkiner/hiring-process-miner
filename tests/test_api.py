@@ -97,14 +97,20 @@ def test_import_matches_hand_computed_cycle_time_and_edge(client: TestClient) ->
     assert performance["completed_cases"] == 2
     assert performance["ongoing_cases"] == 1
     assert performance["cycle_time"]["sample_size"] == 2
+    assert performance["cycle_time"]["mean_seconds"] == 1_123_200
     assert performance["cycle_time"]["median_seconds"] == 1_123_200
     assert performance["cycle_time"]["p90_seconds"] == 1_883_520
+    assert performance["cycle_time"]["p95_seconds"] == 1_978_560
     assert performance["processing_time"] is None
+    assert performance["filter_impact"]["cases_before"] == 3
+    assert performance["filter_impact"]["cases_after"] == 3
     graph = client.get(f"/api/datasets/{dataset_id}/process").json()
     edges = {(edge["source"], edge["target"]): edge for edge in graph["edges"]}
     assert edges[("Applied", "Screened")]["frequency"] == 3
+    assert edges[("Applied", "Screened")]["mean_delay_seconds"] == 115_200
     assert edges[("Applied", "Screened")]["median_delay_seconds"] == 86_400
     assert edges[("Applied", "Screened")]["p90_delay_seconds"] == 155_520
+    assert edges[("Applied", "Screened")]["p95_delay_seconds"] == 164_160
     case_c = client.get(f"/api/datasets/{dataset_id}/cases/C").json()
     assert [event["activity"] for event in case_c["events"]] == [
         "Applied",
@@ -116,11 +122,14 @@ def test_import_matches_hand_computed_cycle_time_and_edge(client: TestClient) ->
         params={"channels": "referral"},
     ).json()
     assert filtered["total_cases"] == 2
+    assert filtered["filter_impact"]["cases_after"] == 2
+    assert filtered["filter_impact"]["cases_before"] == 3
     hidden = client.get(
         f"/api/datasets/{dataset_id}/process",
         params={"min_case_ratio": 0.9},
     ).json()
     assert hidden["edges_after_filter"] < hidden["edges_before_filter"]
+    assert "filter_impact" in hidden
     quality = client.get(f"/api/datasets/{dataset_id}/quality").json()
     assert quality["unique_cases"] == 3
     assert quality["eligible_event_count"] == 12

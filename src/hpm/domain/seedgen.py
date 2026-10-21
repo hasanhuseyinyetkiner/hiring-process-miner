@@ -53,6 +53,21 @@ def generate_cases(n_cases: int, seed: int) -> list[list[dict[str, str]]]:
             f"Synthetic logs must contain between {SYNTHETIC_CASE_MIN} and "
             f"{SYNTHETIC_CASE_MAX} cases"
         )
+    return _generate_cases(n_cases, seed)
+
+
+def generate_benchmark_cases(n_cases: int, seed: int) -> list[list[dict[str, str]]]:
+    """Offline performance fixtures only. Not exposed by the import API.
+
+    Does not inject QX probe rows. Callers must not use this to inflate the
+    documented ``generate_cases(800)`` eligible-case contract.
+    """
+    if n_cases < 1:
+        raise ValueError("Benchmark case count must be at least 1")
+    return _generate_cases(n_cases, seed)
+
+
+def _generate_cases(n_cases: int, seed: int) -> list[list[dict[str, str]]]:
     rng = np.random.default_rng(seed)
     zone = ZoneInfo(SYNTHETIC_TIMEZONE)
     origin = datetime(2026, 1, 6, 10, 30, tzinfo=zone)
