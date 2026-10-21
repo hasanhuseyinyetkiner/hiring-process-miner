@@ -64,3 +64,32 @@ def test_seed_csv_quality_counts_are_exact() -> None:
     assert report["nonexistent_timestamps"] == 1
     assert report["invalid_cost_warnings"] == 1
     assert report["privacy_notice"]
+
+
+def test_seed_800_eligible_excludes_qx_probes_and_matches_bottleneck() -> None:
+    events = parse_csv(render_seed_csv(800, 42), MAPPING, "Europe/Berlin")
+    report = quality_report(events, timezone="Europe/Berlin")
+    assert report["unique_cases"] == 800
+    assert report["excluded_event_count"] >= 5
+    qx_eligible = [
+        event
+        for event in events
+        if event.case_id and str(event.case_id).startswith("QX") and event.exclusion_reason is None
+    ]
+    assert qx_eligible == []
+    qx_excluded = {
+        str(event.case_id)
+        for event in events
+        if event.case_id and str(event.case_id).startswith("QX") and event.exclusion_reason
+    }
+    assert qx_excluded == {"QX1", "QX2", "QX3", "QX4"}
+    data = frame_from_parsed(events)
+    hero = insights(data)["cards"][0]
+    assert hero["source_activity"] == "Interview Scheduled"
+    assert hero["target_activity"] == "Interview Completed"
+    assert hero["value"] is not None
+    days = float(hero["value"]) / 86_400
+    assert 14.6 < days < 14.8
+    assert abs(days - 14.6825) < 0.01
+    assert hero["numerator"] == 592
+    assert hero["sample_size"] == 504

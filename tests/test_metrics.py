@@ -350,13 +350,18 @@ def test_filters_change_graph_and_performance_together() -> None:
     filtered = apply_filters(golden(), spec)
     graph_filtered = directly_follows(filtered)
     perf_filtered = performance(filtered)
+    funnel_all = funnel(golden())
+    funnel_filtered = funnel(filtered)
     assert graph["total_cases"] == 3
     assert graph_filtered["total_cases"] == 2
     assert graph_filtered["total_cases"] == perf_filtered["total_cases"]
+    assert funnel_filtered["denominator"] == 2
+    assert funnel_filtered["denominator"] < funnel_all["denominator"]
     ongoing = apply_filters(golden(), FilterSpec(case_status="ongoing"))
     assert directly_follows(ongoing)["total_cases"] == 1
     assert performance(ongoing)["completed_cases"] == 0
     assert performance(ongoing)["cycle_time"]["sample_size"] == 0
+    assert funnel(ongoing)["denominator"] == 1
 
 
 def test_empty_and_single_event_logs() -> None:
