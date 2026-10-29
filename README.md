@@ -1,34 +1,13 @@
-<p align="center"><img src="docs/assets/logo.png" width="240" alt="Hiring Process Miner logo"></p>
-
 # Hiring Process Miner
 
-**Turn anonymized hiring event logs into inspectable process maps, wait times, and variants.**
+A local application for exploring event logs as process maps, transition delays and case variants. It is designed for hiring workflows, with synthetic data for demonstration; it does not establish why a delay occurred or recommend hiring decisions.
 
-[![CI](https://github.com/hasanhuseyinyetkiner/hiring-process-miner/actions/workflows/ci.yml/badge.svg)](https://github.com/hasanhuseyinyetkiner/hiring-process-miner/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/process-map-dark.png">
+  <img src="docs/screenshots/process-map-light.png" alt="Process map of 800 synthetic hiring cases with interview scheduling selected" width="100%">
+</picture>
 
-[Highlights](#highlights) · [Architecture](#architecture) · [Quick start](#quick-start) · [Evaluation](#engineering-and-evaluation) · [Documentation](#documentation)
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/process-map-dark.png">
-    <img src="docs/screenshots/process-map-light.png" alt="Process map of 800 synthetic hiring cases with Interview Scheduled selected" width="100%">
-  </picture>
-</p>
-
-The process map above shows the seeded synthetic log. Select an activity to inspect case and event counts, filter a cohort, or export the view. See the [bottlenecks](docs/screenshots/bottlenecks-light.png) and [variants](docs/screenshots/variants-light.png) screens, or follow the [demo walkthrough](docs/DEMO.md).
-
-[Watch the real import → process map → bottlenecks workflow (GIF)](docs/assets/demo.gif). The screenshot above is a static alternative; regenerate the animation on Windows with `node scripts/record_demo.mjs` after installing the project dependencies, Playwright Chromium and FFmpeg. The isolated synthetic data and recording are retained in a temporary folder.
-
-> Local, single-user MVP. Recorded delays and drop-offs are observations, not causal findings or hiring decisions.
-
-## Highlights
-
-- **Discover the actual flow.** A directly-follows map, ranked variants, rework and funnel views expose skips and loops in recorded cases.
-- **Measure waiting with context.** Transition latency includes mean, median, P90 and sample sizes; cycle-time metrics distinguish completed from ongoing cases.
-- **Inspect data quality.** CSV mapping and a hygiene report surface excluded events and their reasons before they affect analytics.
-- **Explore a cohort.** Status, channel, job family and outcome filters recalculate results; rule-based conformance compares traces with allowed transitions.
-- **Take results with you.** Export summaries and reports as CSV or HTML, and the map as SVG or PNG.
+The [demo walkthrough](docs/DEMO.md) and [recorded workflow](docs/assets/demo.gif) show import and analysis. The process map above uses 800 synthetic cases; [bottlenecks](docs/screenshots/bottlenecks-light.png) and [variants](docs/screenshots/variants-light.png) show other views.
 
 ## Architecture
 
@@ -49,7 +28,8 @@ The FastAPI service persists datasets with SQLAlchemy; SQLite is the local defau
 
 Event eligibility requires a case ID, an activity and an unambiguous timestamp; duplicates and invalid rows are reported rather than counted. Deterministic ordering makes ties reproducible, but cannot recover missing real-world ordering. Metric definitions and denominators are documented in [metrics](docs/METRICS.md).
 
-The seed-42 demonstration contains **800 eligible synthetic cases**. Its leading *Interview Scheduled → Interview Completed* transition has a median of approximately **14.68 days**; that delay is intentionally constructed in the generator and is not evidence about an employer. Quality-probe rows are excluded from eligible analytics. [Reproduce the evaluation](docs/EVALUATION.md) and inspect the [metric definitions](docs/METRICS.md).
+The seed-42 demonstration contains **800 eligible synthetic cases**. The interview scheduling delay was planted by the generator, so its recovery is a sanity check, not evidence of real-world accuracy. In a separate 10-seed experiment, the app selected the planted transition in 10/10 runs at both zero and ±24 hours of independent timestamp jitter, but 0/10 at ±72 and ±168 hours. Timestamp noise can reorder activities and create different directly-following edges. The [experiment](docs/EVALUATION.md) specifies the setup, eligibility threshold, results and limits; [metrics](docs/METRICS.md) defines the measures.
+
 
 ## Quick start
 
@@ -85,7 +65,7 @@ pnpm exec playwright install chromium  # once
 pnpm e2e
 ```
 
-CI defines link, backend, frontend, Playwright and Compose checks in [its workflow](.github/workflows/ci.yml). The previous local report dated 2026-10-21 recorded 31 backend tests passed and 2 optional PM4Py tests skipped; see [evaluation](docs/EVALUATION.md) for reproduction and limits. These are historical results, not a claim about the current run.
+The [CI workflow](.github/workflows/ci.yml) runs link, backend, frontend, Playwright and Compose checks. The [evaluation](docs/EVALUATION.md) describes the experiments and their limits.
 
 ## Security and limitations
 
@@ -99,3 +79,4 @@ The repository is [MIT licensed](LICENSE). The optional `uv sync --extra pm4py` 
 - [Architecture](docs/ARCHITECTURE.md) and [engineering decisions](docs/ENGINEERING_DECISIONS.md)
 - [Metrics](docs/METRICS.md) and [evaluation](docs/EVALUATION.md)
 - [Security](docs/SECURITY.md), [limitations](docs/LIMITATIONS.md) and [frontend setup](frontend/README.md)
+- [Changelog](CHANGELOG.md)
